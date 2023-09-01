@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${empleados}">Error 404</title>
+
+    <style>
+        td{
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <h1>Lista de Empleados</h1>
@@ -25,11 +31,22 @@
         </thead>
         <tbody>
             <tr th:each="empleado : ${empleadosList}">
-                <td th:text="${empleado.Nombre}">-</td>
+                <td th:text="${empleado.Nombre}">-</td> 
                 <td th:text="${empleado.Apellido}">-</td>
                 <td th:text="${empleado.Email}">-</td>
                 <td th:text="${empleado.Tipo_Contrato}">-</td>
-                <td></td>
+                <!--Horas-->
+                <td th:if='${empleado.Tipo_Contrato == "Horas"}' th:text="${empleado.Horas}"></td>
+                <td th:unless="${empleado.Tipo_Contrato == 'Horas'}" th:text="${0}"></td>
+                
+                <!--Salario-->
+                <td th:if="${empleado.Tipo_Contrato == 'Tiempo Completo' or empleado.Tipo_Contrato == 'Tiempo Completo Bonif.'}" th:text="${2300000}"></td>
+                <td th:unless="${empleado.Tipo_Contrato == 'Tiempo Completo' or empleado.Tipo_Contrato == 'Tiempo Completo Bonif.'}" th:text="${0}"></td>
+                
+                <td th:if="${empleado.Tipo_Contrato == 'Tiempo Completo Bonif.'}" th:text="${empleado.BONOS}"></td>
+                <td th:unless="${empleado.Tipo_Contrato == 'Tiempo Completo Bonif.'}" th:text="${0}"></td>
+
+                <td th:text="${empleado.calculTotal()}"></td>
             </tr>
         </tbody>
     </table>
